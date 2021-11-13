@@ -3,13 +3,18 @@
 {% block content%}
 <div class="mtp-5"></div>
     <div class="m-auto w-25 shadow p-4">
-        <h3 class="text-center">Register Now!</h3>
-        <form method="post">
+        <h3 class="text-center">Register Now! </h3>
+        <form method="post" class="myform">
             {% csrf_token %}
+            <div class="form-group">
+                {{form}}
+            </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary w-100">Register Now</button>
             </div>
             <h6 class="">I have already account <a href="{% url 'login'%}">login here</a></h6>
         </form>
     </div>
+
+
 {% endblock%}
