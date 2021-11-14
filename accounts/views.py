@@ -71,7 +71,6 @@ def forget_password(request):
             otp =random.randrange(1111,9999)
             print("Mail send with otp",otp)
             request.session['otp_code']=otp
-
             messages.error(request, 'Please chcek your Mail.')
             return redirect('verify_otp')
     context['form']=form
