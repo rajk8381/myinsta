@@ -4,7 +4,6 @@ from django import forms
 from .models import PublicUser
 
 class RegisterForm(forms.ModelForm):
-
     password = forms.CharField(widget=forms.PasswordInput)
     reapeat_password = forms.CharField(widget=forms.PasswordInput)
     first_name = forms.CharField(label="Full Name")
@@ -28,10 +27,25 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Full Name Must be String.")
         return first_name
 
-
-
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+
+
+class LoginForm(forms.Form):
+    # email=forms.EmailField(widget=forms.TextInput(attrs={
+    #     'class':'form-control',
+    #     'type':'email',
+    #     'placeholder':'Enter Email',
+    # }))
+    email=forms.EmailField()
+    password=forms.CharField()
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['placeholder'] = "Enter "+str(visible.name).title()
+
 
