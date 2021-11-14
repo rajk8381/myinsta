@@ -49,3 +49,30 @@ class LoginForm(forms.Form):
             visible.field.widget.attrs['placeholder'] = "Enter "+str(visible.name).title()
 
 
+
+class ForgetPasswordForm(forms.Form):
+    email=forms.EmailField()
+    def __init__(self, *args, **kwargs):
+        super(ForgetPasswordForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['placeholder'] = "Enter "+str(visible.name).title()
+
+
+class ResetPasswordForm(forms.Form):
+    new_password=forms.CharField()
+    repeat_password = forms.CharField()
+    def __init__(self, *args, **kwargs):
+        super(ResetPasswordForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['placeholder'] = "Enter "+str(visible.name).title()
+
+    def clean_repeat_password(self):
+        new_password =self.cleaned_data.get('new_password')
+        repeat_password =self.cleaned_data.get('repeat_password')
+        if new_password!=repeat_password:
+            raise forms.ValidationError("Repeat Password Not Match.")
+        elif len(new_password)<8:
+            raise forms.ValidationError("Password must be 8 digit.")
+        return repeat_password
