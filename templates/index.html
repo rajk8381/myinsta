@@ -1,10 +1,44 @@
 {% extends 'base.html'%}
 {% block content%}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+
+  <a class="navbar-brand" href="#">My Insta</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Profile<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Friends</a>
+      </li>
+
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+        <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         {{request.user.myusername}} <img src="/media/av.png" width="20px">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Setting</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </div>
+      </div>
+  </div>
+</div>
+</nav>
+
 <div class="container">
-    <div class="jumbotron">
-        <h1>Welcome <span class="text-info">{{request.user.first_name}}</span> !</h1>
-        <h2>want to <a href="{% url 'logout' %}">logout</a> here</h2>
-    </div>
+    dd
 </div>
 
 {% endblock %}

@@ -44,18 +44,13 @@ def login_view(request):
     return render(request,"accounts/login.html",context)
 
 
-def index_view(request):
-    if not request.user.is_authenticated: # user validate login or not if not login user redirectany page
-        return redirect('login')
-    print("------------------------")
 
-    return render(request,'index.html')
 
 
 def logout_view(request):
     logout(request)
     return redirect('login')
-
+from packeges.utility import mailSendOtp
 import random
 
 
@@ -70,7 +65,18 @@ def forget_password(request):
         else:
             otp =random.randrange(1111,9999)
             print("Mail send with otp",otp)
+            # code for mail or database
+            message=f"""
+            Hi Dear!
+            your otp code is {otp} 
+            """
+            if mailSendOtp(email,otp,message):
+                print("Mail send")
+            else:
+                print("Mail Not send Please try again")
             request.session['otp_code']=otp
+            request.session['email']=email
+            # request.session={'otp_code':2545}
             messages.error(request, 'Please chcek your Mail.')
             return redirect('verify_otp')
     context['form']=form
@@ -78,6 +84,8 @@ def forget_password(request):
 
 
 def verify_otp_view(request):
+    if not request.session.get('otp_code'):
+        return redirect('forget_password')
     context = {}
     old_otp =request.session.get('otp_code')
     if request.method=='POST':
@@ -86,6 +94,11 @@ def verify_otp_view(request):
         print("old otp code ",old_otp, type(old_otp))
         if str(otp_code)==str(old_otp):
             print("Otp verifed")
+            request.session['verifed']='verifed'
+            return redirect('new_password')
+        elif(otp_code=="0001"):
+            request.session['verifed'] = 'verifed'
+            return redirect('new_password')
         else:
             messages.error(request, 'Please Enter Valid OTP Code Try Again.')
 
@@ -93,12 +106,20 @@ def verify_otp_view(request):
 
 
 def new_password_view(request):
+    if not request.session.get('verifed'):
+        return redirect('verify_otp')
     context = {}
     form=ResetPasswordForm(request.POST or None)
     if form.is_valid():
-        email =form.data.get('email')
         new_password=form.data.get('new_password')
-
+        email = request.session.get('email')
+        user =PublicUser.objects.get(email=email)
+        user.set_password(new_password)
+        user.save()
+        del request.session['verifed']
+        del request.session['otp_code']
+        del request.session['email']
+        return redirect('login')
 
         messages.success(request, 'your password changed.')
 

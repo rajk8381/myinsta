@@ -20,6 +20,14 @@ class PublicUser(AbstractUser):
     REQUIRED_FIELDS = []
     objects = UserManager()
 
+    def myusername(self):
+        email=str(self.email).split("@")
+        try:
+            username =email[0]
+        except:
+            username = ""
+        return username
+
 
 
 

@@ -8,6 +8,12 @@ def validateEmail(email):
     else:
         return False
 
-e =validateEmail('sure@gmail.com')
+# e =validateEmail('sure@gmail.com')
 
-print(e)
+
+def mailSendOtp(email,otp,message):
+    try:
+        print("call function mail",email,otp,message)
+        return True
+    except:
+        return False
