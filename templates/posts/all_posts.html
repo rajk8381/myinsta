@@ -1,12 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-All Post here
+{% for post in all_post%}
+    <div class="card">
+        <div class="card-header">
+            <div class="">
+                {% if post.user.image %}
 
-{{all_post}}
-</body>
-</html>
+                <img src="/media/{{post.user.image}}" class="img-circle" width="40px">
+                {% else %}
+                 <img src="/media/a.png" class="img-circle img-gol" width="40px">
+                {% endif %}
+                @{{post.user.myusername}}</div>
+        </div>
+
+        <div class="card-img">
+            <img src="/media/{{post.image}}" width="100%">
+        </div>
+        <div class="card-body">
+            <small>{{post.desc}}</small>
+        </div>
+        <div class="card-footer">
+            <a href="#">Like </a>
+            <a href="#">Comments </a>
+            <a href="#">Share </a>
+        </div>
+   </div>
+
+{% endfor%}

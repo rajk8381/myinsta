@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 from accounts.models import PublicUser
 class Post(models.Model):
+    # user =<ob1>
+    #user_id =1
     user=models.ForeignKey(PublicUser, on_delete=models.CASCADE, related_name="post_user")
     image =models.ImageField(upload_to="uploads/posts",default="p.png")
     desc =models.TextField(max_length=1000)

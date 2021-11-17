@@ -1,6 +1,37 @@
 {% extends 'base.html'%}
 {% block content%}
 
+<div class="modal" id="AddPostModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">New Post</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+          <div id="msg">................</div>
+        <form method="post" id="addPostForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="file" name="image" id="id_image" required>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" name="desc" id="id_desc" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Save Post</button>
+            </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
@@ -18,12 +49,15 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Friends</a>
       </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#AddPostModal"> + Add Post</a>
+      </li>
 
     </ul>
     <div class="form-inline my-2 my-lg-0">
         <div class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         {{request.user.myusername}} <img src="/media/av.png" width="20px">
+         {{request.user.myusername}} <img src="/media/a.png" width="20px">
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">Profile</a>
@@ -38,7 +72,59 @@
 </nav>
 
 <div class="container">
-    dd
+    <div class="row">
+        <div class="col-md-5">
+            <div class="p-4" id="allPosts">
+            </div>
+        </div>
+        <div class="col-md-7">right part</div>
+    </div>
+
+
+
 </div>
+
+
+<script>
+    function abcd(){
+        $("#allPosts").load("/all_posts/")
+
+    }
+
+
+
+
+    abcd();
+
+
+
+   $('#addPostForm').submit(function(e){
+        e.preventDefault();
+        //var image =$("#id_image").val();
+        //var desc =$("#id_desc").val();
+        //console.log(image);
+        //console.log(desc);
+
+       var formData = new FormData(this);
+
+
+       $.ajax({
+            url:"/addPost/",
+            data:formData,
+            type:"post",
+            contentType: false,
+            processData: false,
+            success:function(data){
+            $("#msg").html(data);
+            abcd();
+             $('#AddPostModal').modal('toggle');
+
+
+            }
+       });
+
+   });
+
+</script>
 
 {% endblock %}
