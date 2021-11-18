@@ -20,3 +20,8 @@ color:red;
 .img-gol{
     border-radius: 50%;
 }
+
+.follower-list{
+    height: 610px;
+    overflow-y: scroll;
+}

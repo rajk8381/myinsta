@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+# https://meet.google.com/fgs-nebc-dkb?pli=1
 import os
 import sys
 

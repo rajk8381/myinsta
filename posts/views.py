@@ -16,6 +16,14 @@ def all_posts_view(request):
     return render(request,"posts/all_posts.html",context)
 
 
+def posts_details_view(request,pid=None):
+    context ={}
+    one_post =Post.objects.get(pk=pid)
+    context['post']= one_post
+    return render(request,"posts/post_details.html",context)
+
+
+
 
 def save_post_view(request):
     image=request.FILES.get("image")
@@ -29,3 +37,11 @@ def save_post_view(request):
     message1 ='<h4 class="text-success">Form save successfully!</h1>'
 
     return HttpResponse(message1)
+
+
+def post_like_view(request,pid=None):
+    post =Post.objects.get(id=pid)
+    post.likes.add(request.user)
+    post.save()
+    msg ="like hua"+str(pid)
+    return HttpResponse(msg)

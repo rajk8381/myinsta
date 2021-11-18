@@ -29,6 +29,8 @@ class RegisterForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
+        self.fields['email'].label = "New Email Label"
+        self.fields['email'].label = "New Email Label"
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 

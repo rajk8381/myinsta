@@ -1,14 +1,15 @@
 {% for post in all_post%}
+    <a href="post_details/{{post.id}}/">
     <div class="card my-2">
         <div class="card-header">
             <div class="">
                 {% if post.user.image %}
-
                 <img src="/media/{{post.user.image}}" class="img-circle" width="40px">
                 {% else %}
                  <img src="/media/a.png" class="img-circle img-gol" width="40px">
                 {% endif %}
-                @{{post.user.myusername}}</div>
+                @{{post.user.myusername}}
+            </div>
         </div>
 
         <div class="card-img">
@@ -18,10 +19,30 @@
             <small>{{post.desc}}</small>
         </div>
         <div class="card-footer">
-            <a href="#">Like </a>
-            <a href="#">Comments </a>
+            <a href="#" class="text-danger" id="like_icon{{post.id}}">
+                <i class="fa fa-heart" aria-hidden="true" onclick="likePost('{{post.id}}')"></i>
+            </a> ({{post.likes.count}})
+            <a href="#">Comments ({{post.comment_post.count}}) </a>
             <a href="#">Share </a>
         </div>
-   </div>
 
+        <div class="card-body">
+            {% for cm in post.comment_post.all %}
+                    {% if post.user.image %}
+            <div class="my-2">
+                <img src="/media/{{cm.user.image}}" class="img-circle" width="40px">
+                {% else %}
+                 <img src="/media/a.png" class="img-circle img-gol" width="40px">
+                {% endif %}
+               {{cm.comment}}
+                <small class="float-right">{{cm.created_at}}</small>
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class="form-group">
+                 <input type="text" placeholder="Type Comment here" class="form-control">
+            </div>
+   </div>
+    </a>
 {% endfor%}

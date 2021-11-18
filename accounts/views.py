@@ -125,3 +125,7 @@ def new_password_view(request):
 
     context['form']=form
     return render(request,'accounts/new_password.html',context)
+
+def profile_view(request):
+    context ={}
+    return render(request,"accounts/profile.html",context)
