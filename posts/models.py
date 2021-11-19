@@ -23,6 +23,9 @@ class Post(models.Model):
                                  default="1")
     likes =models.ManyToManyField(PublicUser, related_name="like_post",null=True,blank=True)
 
+
+
+
     # likes=[1,2,5,5]
     # class like_post():
     #     user =models.ForeignKey(PublicUser, on_delete=models.CASCADE, related_name="post_user")
@@ -66,3 +69,13 @@ cross
 self
 
 """
+
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(PublicUser, on_delete=models.CASCADE, related_name="followers")
+    follow_user = models.ForeignKey(PublicUser, on_delete=models.CASCADE, related_name="following")
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "friends"

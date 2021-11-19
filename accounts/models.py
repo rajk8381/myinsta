@@ -19,7 +19,7 @@ class PublicUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = UserManager()
-    likes =models.ManyToManyField('self',related_name="like_user",null=True,blank=True)
+
 
     def myusername(self):
         email=str(self.email).split("@")

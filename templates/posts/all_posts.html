@@ -1,41 +1,43 @@
 {% for post in all_post%}
-    <a href="post_details/{{post.id}}/">
     <div class="card my-2">
         <div class="card-header">
             <div class="">
                 {% if post.user.image %}
-                <img src="/media/{{post.user.image}}" class="img-circle" width="40px">
+                <img src="/media/{{post.user.image}}" class="img-circle" width="40px" style="border-radius:50%">
                 {% else %}
                  <img src="/media/a.png" class="img-circle img-gol" width="40px">
                 {% endif %}
-                @{{post.user.myusername}}
+
+                @<a href="/accounts/profile/{{post.user.id}}/"> {{post.user.myusername}}</a>
             </div>
         </div>
-
+        <a href="post_details/{{post.id}}/">
         <div class="card-img">
             <img src="/media/{{post.image}}" width="100%">
         </div>
         <div class="card-body">
             <small>{{post.desc}}</small>
+
         </div>
+        </a>
         <div class="card-footer">
-            <a href="#" class="text-danger" id="like_icon{{post.id}}">
+            <a  class="{% if request.user in post.likes.all %}text-dark {% else %} text-danger{% endif%}" id="like_icon{{post.id}}">
                 <i class="fa fa-heart" aria-hidden="true" onclick="likePost('{{post.id}}')"></i>
-            </a> ({{post.likes.count}})
-            <a href="#">Comments ({{post.comment_post.count}}) </a>
-            <a href="#">Share </a>
+            </a>  ({{post.likes.count}})
+            <a >Comments ({{post.comment_post.count}}) </a>
+            <a>Share </a>
         </div>
 
         <div class="card-body">
             {% for cm in post.comment_post.all %}
-                    {% if post.user.image %}
             <div class="my-2">
-                <img src="/media/{{cm.user.image}}" class="img-circle" width="40px">
+                {% if post.user.image %}
+                <img src="/media/{{cm.user.image}}" class="img-circle" style="border-radius:50%" width="40px">
                 {% else %}
-                 <img src="/media/a.png" class="img-circle img-gol" width="40px">
+                 <img src="/media/a.png" class="img-circle img-gol" width="40px" style="border-radius:50%">
                 {% endif %}
                {{cm.comment}}
-                <small class="float-right">{{cm.created_at}}</small>
+                <small class="float-right">{{cm.created_at|date:"d, M"}}</small>
             </div>
             {% endfor %}
 
@@ -44,5 +46,5 @@
                  <input type="text" placeholder="Type Comment here" class="form-control">
             </div>
    </div>
-    </a>
+
 {% endfor%}

@@ -19,5 +19,68 @@
 
 {% block content%}
 {% endblock%}
+
+<script>
+    function loadPost(){
+        $("#allPosts").load("/all_posts/")
+    }
+     function loadFollowList(user_id){
+        $("#follow_list").load("/follow_list/")
+    }
+
+    loadPost();
+    loadFollowList();
+
+
+   $('#addPostForm').submit(function(e){
+        e.preventDefault();
+        //var image =$("#id_image").val();
+        //var desc =$("#id_desc").val();
+        //console.log(image);
+        //console.log(desc);
+
+       var formData = new FormData(this);
+
+       $.ajax({
+            url:"/addPost/",
+            data:formData,
+            type:"post",
+            contentType: false,
+            processData: false,
+            success:function(data){
+            $("#msg").html(data);
+            loadPost();
+             $('#AddPostModal').modal('toggle');
+
+
+            }
+       });
+
+   });
+
+</script>
+
+<script>
+    function likePost(post_id){
+        $.ajax({
+            url:"/post_like/"+post_id+"/",
+            success:function(data){
+                $("#like_icon"+post_id).addClass("text-dark");
+                 loadPost();
+            }
+        });
+    }
+
+    function followUser(user_id){
+
+        $.ajax({
+            url:"/follow_unfollow/"+user_id+"/",
+            success:function(data){
+               console.log(data);
+               loadFollowList();
+            }
+        });
+    }
+</script>
 </body>
 </html>

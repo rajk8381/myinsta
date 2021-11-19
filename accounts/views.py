@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 
-from .forms import RegisterForm,LoginForm,ForgetPasswordForm,ResetPasswordForm
+from .forms import RegisterForm,LoginForm,ForgetPasswordForm,ResetPasswordForm,EditProfileForm
 from django.contrib import messages
 from .models import PublicUser
 from django.contrib.auth.models import make_password
@@ -126,6 +126,18 @@ def new_password_view(request):
     context['form']=form
     return render(request,'accounts/new_password.html',context)
 
-def profile_view(request):
-    context ={}
+def profile_view(request,user_id):
+    context = {}
+    user = PublicUser.objects.get(id=user_id)
+    context['user'] = user
     return render(request,"accounts/profile.html",context)
+
+def edit_profile_view(request,user_id=None):
+    context = {}
+    user =PublicUser.objects.get(id=user_id)
+    form = EditProfileForm(request.POST or None, request.FILES or None,instance=user)
+    if form.is_valid():
+        form.save()
+        return redirect('profile')
+    context['form']=form
+    return render(request,"accounts/edit_profile.html",context)

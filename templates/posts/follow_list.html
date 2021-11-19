@@ -1,0 +1,16 @@
+{% for user in users %}
+ <li class="d-flex justify-content-between bg-white my-2 p-1 px-2 rounded">
+                        <div class="d-flex flex-row align-items-center">
+                            <img src="/media/{{user.image}}" width="30px">
+                            <div class="ml-2">
+                                <h6 class="mb-0">{{user.myusername}}</h6>
+                                <div class="d-flex flex-row mt-1 text-black-50 date-time">
+                                    <small>{{user.about}}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center">
+                            <a onclick="followUser('{{user.id}}')" class="btn btn-primary" >Follow</a>
+                        </div>
+                    </li>
+{% endfor %}

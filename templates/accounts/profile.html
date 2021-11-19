@@ -1,17 +1,144 @@
 {% extends "base.html"%}
 {% block content%}
-<div class="mtp-5"></div>
-<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-    <div class="card p-4">
-        <div class=" image d-flex flex-column justify-content-center align-items-center"> <button class="btn btn-secondary"> <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /></button> <span class="name mt-3">Eleanor Pena</span> <span class="idd">@eleanorpena</span>
-            <div class="d-flex flex-row justify-content-center align-items-center gap-2"> <span class="idd1">Oxc4c16a645_b21a</span> <span><i class="fa fa-copy"></i></span> </div>
-            <div class="d-flex flex-row justify-content-center align-items-center mt-3"> <span class="number">1069 <span class="follow">Followers</span></span> </div>
-            <div class=" d-flex mt-2"> <button class="btn1 btn-dark">Edit Profile</button> </div>
-            <div class="text mt-3"> <span>Eleanor Pena is a creator of minimalistic x bold graphics and digital artwork.<br><br> Artist/ Creative Director by Day #NFT minting@ with FND night. </span> </div>
-            <div class="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center"> <span><i class="fa fa-twitter"></i></span> <span><i class="fa fa-facebook-f"></i></span> <span><i class="fa fa-instagram"></i></span> <span><i class="fa fa-linkedin"></i></span> </div>
-            <div class=" px-2 rounded mt-4 date "> <span class="join">Joined May,2021</span> </div>
+
+{% include 'nav.html'%}
+<div class="m-2"></div>
+
+<div class="container">
+    <div class="jumbotron">
+
+
+        <div class="row">
+            <div class="col-md-2">
+               <img src="/media/{{user.image}}/" width="100%">
+            </div>
+            <div class="col-md-8">
+                <h1>{{user.first_name}}</h1>
+                <small>{{user.myusername}}</small>
+                <div>
+                    <a href="/accounts/edit_profile/{{user.id}}/" class="btn btn-warning">Edit Profile</a>
+                </div>
+
+            </div>
+        </div>
+
+        <p></p>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="post-tab" data-toggle="tab" href="#post" role="tab" aria-controls="post"
+               aria-selected="true">Posts</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" id="follower-tab" data-toggle="tab" href="#follower" role="tab" aria-controls="follower"
+               aria-selected="false">Follower</a>
+        </li>
+         <li class="nav-item">
+            <a class="nav-link" id="following-tab" data-toggle="tab" href="#following" role="tab" aria-controls="following"
+               aria-selected="false">Following</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="friend-tab" data-toggle="tab" href="#friend" role="tab" aria-controls="friend"
+               aria-selected="false">Friends</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments"
+               aria-selected="false">Comments</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="post" role="tabpanel" aria-labelledby="post-tab">
+            <div class="row">
+
+                {% for post in user.post_user.all%}
+                <div class="col-md-4">
+                    <div class="card my-2">
+                        <a href="/post_details/{{post.id}}/">
+                        <div class="card-img">
+                            <img src="/media/{{post.image}}" width="100%">
+                        </div>
+                        <div class="card-body">
+                            <small>{{post.desc}}</small>
+
+                        </div>
+                        </a>
+
+                   </div>
+                </div>
+                {% endfor%}
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="friend" role="tabpanel" aria-labelledby="friend-tab">2</div>
+        <div class="tab-pane fade" id="follower" role="tabpanel" aria-labelledby="follower-tab">
+            <ul class="list list-inline bg-light p-4 follower-list">
+            {% for user in user.followers.all %}
+
+
+                 <li class="d-flex justify-content-between bg-white my-2 p-1 px-2 rounded">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <img src="/media/{{user.follow_user.image}}" width="30px">
+                                            <div class="ml-2">
+                                                <h6 class="mb-0">{{user.follow_user.myusername}}</h6>
+                                                <div class="d-flex flex-row mt-1 text-black-50 date-time">
+                                                    <small>{{user.follow_user.about}}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center">
+                                            <a onclick="followUser('{{user.follow_user.id}}')" class="btn btn-warning" >Un Follow</a>
+                                        </div>
+                                    </li>
+                {% endfor %}
+           </ul>
+
+        </div>
+        <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
+            <ul class="list list-inline bg-light p-4 follower-list">
+            {% for user in user.following.all %}
+                {{user}}
+                 <li class="d-flex justify-content-between bg-white my-2 p-1 px-2 rounded">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <img src="/media/{{user.follow_user.image}}" width="30px">
+                                            <div class="ml-2">
+                                                <h6 class="mb-0">{{user.myusername}}</h6>
+                                                <div class="d-flex flex-row mt-1 text-black-50 date-time">
+                                                    <small>{{user.about}}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center">
+                                            <a onclick="followUser('{{user.id}}')" class="btn btn-primary" >Follow</a>
+                                        </div>
+                                    </li>
+                {% endfor %}
+           </ul>
+        </div>
+        <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+            <ul class="list list-inline bg-light p-4 follower-list">
+            {% for user in users %}
+                 <li class="d-flex justify-content-between bg-white my-2 p-1 px-2 rounded">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <img src="/media/{{user.image}}" width="30px">
+                                            <div class="ml-2">
+                                                <h6 class="mb-0">{{user.myusername}}</h6>
+                                                <div class="d-flex flex-row mt-1 text-black-50 date-time">
+                                                    <small>{{user.about}}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center">
+                                            <a onclick="followUser('{{user.id}}')" class="btn btn-primary" >Follow</a>
+                                        </div>
+                                    </li>
+                {% endfor %}
+           </ul>
         </div>
     </div>
+
+
 </div>
+
 
 {% endblock%}>

@@ -35,6 +35,31 @@ class RegisterForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
+class EditProfileForm(forms.ModelForm):
+    dob=forms.CharField(widget=forms.TextInput(attrs={'type':'date'}))
+    class Meta:
+        model =PublicUser
+        fields =['image','first_name','about_me','mobile','gender','dob']
+
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if str(first_name).isnumeric():
+            raise forms.ValidationError("Full Name Must be String.")
+        return first_name
+
+    def clean_mobile(self):
+        mobile = self.cleaned_data.get('mobile')
+        if not str(mobile).isdigit():
+            raise forms.ValidationError("Mobile Must be Number.")
+        return mobile
+
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.fields['mobile'].label = "Mobile"
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 class LoginForm(forms.Form):
     # email=forms.EmailField(widget=forms.TextInput(attrs={
