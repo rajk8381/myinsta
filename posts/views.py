@@ -20,10 +20,16 @@ def posts_details_view(request,pid=None):
 
 def follow_list_view(request,pid=None):
     context ={}
-    followers=Follow.objects.filter(user=request.user).values_list('follow_user',flat=True)
+    # followers=Follow.objects.filter(user=request.user).values_list('follow_user',flat=True)
+    # users =PublicUser.objects.filter().exclude(pk=request.user.pk).exclude(id__in=followers)
 
-    users =PublicUser.objects.filter().exclude(pk=request.user.pk).exclude(id__in=followers)
+
+    following =Follow.objects.filter(follow_user_id=request.user.id).values_list("user_id", flat=True)
+
+    users =PublicUser.objects.exclude(id=request.user.id).exclude(id__in=following)
+
     context['users']= users
+    context['count']= users.count()
     return render(request,"posts/follow_list.html",context)
 
 
@@ -50,12 +56,12 @@ def post_like_view(request,pid=None):
 
 def follow_unfollow(request,user_id=None):
     msg = "Follow Successfully!"
-    followed =Follow.objects.filter(user=request.user,follow_user_id=user_id)
+    followed =Follow.objects.filter(user_id=user_id,follow_user=request.user)
     if followed:
         followed[0].delete()
         msg = "Un-Follow Successfully!"
     else:
-        Follow.objects.create(user=request.user, follow_user_id=user_id)
+        Follow.objects.create(user_id=user_id,follow_user=request.user)
         msg = "Follow Successfully!"
     return HttpResponse(msg)
 
