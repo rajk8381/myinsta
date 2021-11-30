@@ -74,3 +74,11 @@ def friend_list(request):
 
     return render(request,'posts/friendlist.html',context)
 
+
+
+
+
+# test
+
+def text_api(request):
+    return render(request,'home.html')

@@ -16,7 +16,7 @@
     <div class="col-md-8"></div>
     <div class="col-md-4 shadow p-4">
         <h3 class="text-center">Forget Password!</h3>
-        <form method="post" class="myform">
+        <form method="post" class="myform" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 {{form}}

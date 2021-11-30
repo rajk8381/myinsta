@@ -9,4 +9,5 @@ urlpatterns =[
     path('post_details/<pid>/',views.posts_details_view, name='post_details'),
     path('follow_unfollow/<user_id>/',views.follow_unfollow, name='follow_unfollow'),
     path('friend_list/',views.friend_list, name='friend_list'),
+    path('text_api/',views.text_api, name='text_api'),
    ]

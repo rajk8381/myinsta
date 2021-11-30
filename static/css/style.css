@@ -25,3 +25,12 @@ color:red;
     max-height: 610px;
     overflow-y: scroll;
 }
+
+.card-img{
+    max-width: 100%;
+   height: 350px;
+   overflow: hidden;
+}
+
+
+

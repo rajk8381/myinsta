@@ -26,6 +26,7 @@ class Post(models.Model):
 
 
 
+
     # likes=[1,2,5,5]
     # class like_post():
     #     user =models.ForeignKey(PublicUser, on_delete=models.CASCADE, related_name="post_user")
@@ -69,8 +70,6 @@ cross
 self
 
 """
-
-
 
 class Follow(models.Model):
     user = models.ForeignKey(PublicUser, on_delete=models.CASCADE, related_name="followers")

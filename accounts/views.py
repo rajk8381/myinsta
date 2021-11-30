@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import PublicUser
 from django.contrib.auth.models import make_password
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 
 # SignUp new users | registration page
 def register_view(request):
@@ -17,7 +18,6 @@ def register_view(request):
         user.password = make_password(form.data.get('password'))
         user.save()
         messages.add_message(request, messages.INFO, 'Register Succesfully!')
-
     context['form']=form
     return render(request,"accounts/register.html",context)
 
@@ -40,10 +40,7 @@ def login_view(request):
             else:
                 messages.error(request, 'Email and Password incorrect.')
     context['form']=form
-
     return render(request,"accounts/login.html",context)
-
-
 
 
 
@@ -126,6 +123,8 @@ def new_password_view(request):
     context['form']=form
     return render(request,'accounts/new_password.html',context)
 
+
+@login_required(login_url="login")
 def profile_view(request,user_id):
     context = {}
     user = PublicUser.objects.get(id=user_id)
@@ -138,6 +137,6 @@ def edit_profile_view(request,user_id=None):
     form = EditProfileForm(request.POST or None, request.FILES or None,instance=user)
     if form.is_valid():
         form.save()
-        return redirect('profile')
+        return redirect(f'/accounts/profile/{request.user.id}')
     context['form']=form
     return render(request,"accounts/edit_profile.html",context)
